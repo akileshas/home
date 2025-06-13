@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>akileshas | ai scientist</title>
   <style>
-    /* Reset and page layout */
     * {
       margin: 0;
       padding: 0;
@@ -14,7 +13,7 @@
 
     html, body {
       height: 100%;
-      overflow: hidden; /* Disable page scroll */
+      overflow: hidden;
       background: #0a0a0a;
       font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
       font-size: 14px;
@@ -23,7 +22,6 @@
       justify-content: center;
     }
 
-    /* Terminal container */
     .terminal-container {
       width: 90%;
       max-width: 900px;
@@ -36,7 +34,6 @@
       position: relative;
     }
 
-    /* Terminal header */
     .terminal-header {
       background: #1a1a1a;
       border-bottom: 1px solid rgba(15, 125, 177, 0.2);
@@ -70,7 +67,6 @@
       font-weight: 500;
     }
 
-    /* Terminal content */
     .terminal-content {
       height: calc(100% - 60px);
       overflow-y: auto;
@@ -79,7 +75,6 @@
       border-radius: 0 0 11px 11px;
     }
 
-    /* Custom scrollbar */
     .terminal-content::-webkit-scrollbar {
       width: 8px;
     }
@@ -98,7 +93,6 @@
       background: rgba(15, 125, 177, 0.5);
     }
 
-    /* Terminal text styles - all consistent font size */
     .line {
       margin: 0.3rem 0;
       white-space: pre-wrap;
@@ -148,7 +142,6 @@
       font-size: 14px;
     }
 
-    /* Command syntax highlighting */
     .cmd-whoami,
     .cmd-pwd,
     .cmd-fastfetch,
@@ -161,13 +154,11 @@
       font-size: 14px;
     }
 
-    /* Path highlighting */
     .path {
       color: #8be9fd;
       font-size: 14px;
     }
 
-    /* Updated link styles */
     .file-link, .path-link {
       color: #f0f0f0;
       text-decoration: none;
@@ -181,7 +172,6 @@
       text-decoration-color: #50fa7b;
     }
 
-    /* Fastfetch style display */
     .fastfetch {
       margin: 1rem 0;
       padding: 1rem;
@@ -230,7 +220,6 @@
       font-size: 14px;
     }
 
-    /* Cursor animation */
     .cursor {
       display: inline-block;
       width: 10px;
@@ -246,7 +235,6 @@
       51%, 100% { opacity: 0; }
     }
 
-    /* General links (for other content) */
     a:not(.file-link):not(.path-link) {
       color: #0f7db1;
       text-decoration: none;
@@ -259,7 +247,6 @@
       text-decoration: underline;
     }
 
-    /* Screen size warning */
     .screen-warning {
       display: none;
       position: fixed;
@@ -300,7 +287,6 @@
       font-weight: bold;
     }
 
-    /* Responsive design */
     @media (max-width: 700px) {
       .terminal-container {
         display: none;
@@ -468,7 +454,6 @@
   </div>
 
   <script>
-    // Update viewport size display
     function updateViewportSize() {
       const viewportElement = document.getElementById('viewport-size');
       if (viewportElement) {
@@ -476,7 +461,6 @@
       }
     }
 
-    // Update on load and resize
     window.addEventListener('load', updateViewportSize);
     window.addEventListener('resize', updateViewportSize);
   </script>
