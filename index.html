@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>akileshas | ai scientist</title>
+  <style>
+    /* Reset and page layout */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden; /* Disable page scroll */
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Terminal container */
+    .terminal-container {
+      width: 90%;
+      max-width: 900px;
+      height: 85vh;
+      background: rgba(15, 15, 15, 0.95);
+      border-radius: 12px;
+      border: 1px solid rgba(15, 125, 177, 0.3);
+      box-shadow:
+        0 0 50px rgba(15, 125, 177, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Terminal header */
+    .terminal-header {
+      background: linear-gradient(90deg, #1a1a1a, #2a2a2a);
+      border-bottom: 1px solid rgba(15, 125, 177, 0.2);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .terminal-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .terminal-button {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+    }
+
+    .close { background: #ff5f56; }
+    .minimize { background: #ffbd2e; }
+    .maximize { background: #27ca3f; }
+
+    .terminal-title {
+      color: #0f7db1;
+      font-size: 14px;
+      margin-left: 15px;
+      font-weight: 500;
+    }
+
+    /* Terminal content */
+    .terminal-content {
+      height: calc(100% - 60px);
+      overflow-y: auto;
+      padding: 20px;
+      background: #000000;
+    }
+
+    /* Custom scrollbar */
+    .terminal-content::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .terminal-content::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+
+    .terminal-content::-webkit-scrollbar-thumb {
+      background: rgba(15, 125, 177, 0.3);
+      border-radius: 4px;
+    }
+
+    .terminal-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(15, 125, 177, 0.5);
+    }
+
+    /* Terminal text styles */
+    .line {
+      margin: 0.3rem 0;
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .prompt {
+      color: #0f7db1;
+      font-weight: 500;
+    }
+
+    .prompt::before {
+      content: "➜ ";
+      color: #0f7db1;
+      font-weight: bold;
+    }
+
+    .output {
+      color: #f0f0f0;
+      margin-left: 1rem;
+    }
+
+    .comment {
+      color: #888;
+      font-style: italic;
+    }
+
+    .highlight {
+      color: #0f7db1;
+      font-weight: bold;
+    }
+
+    .accent {
+      color: #ff6b6b;
+      font-weight: 500;
+    }
+
+    .info {
+      color: #ffd93d;
+    }
+
+    /* Fastfetch style display */
+    .fastfetch {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: rgba(15, 125, 177, 0.05);
+      border-left: 3px solid #0f7db1;
+      border-radius: 0 8px 8px 0;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .ascii-art {
+      color: #0f7db1;
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: pre;
+      min-width: 120px;
+    }
+
+    .fastfetch-info {
+      flex: 1;
+    }
+
+    .fastfetch-header {
+      color: #0f7db1;
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 0.5rem;
+    }
+
+    .fastfetch-line {
+      display: flex;
+      margin: 0.2rem 0;
+    }
+
+    .fastfetch-key {
+      color: #0f7db1;
+      font-weight: 500;
+      min-width: 120px;
+    }
+
+    .fastfetch-value {
+      color: #f0f0f0;
+    }
+
+    /* Cursor animation */
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.2rem;
+      background: #0f7db1;
+      margin-left: 5px;
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    /* Links */
+    a {
+      color: #0f7db1;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .terminal-container {
+        width: 95%;
+        height: 90vh;
+      }
+
+      .terminal-content {
+        padding: 15px;
+      }
+
+      .line {
+        font-size: 13px;
+      }
+
+      .fastfetch-key {
+        min-width: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal-container">
+    <div class="terminal-header">
+      <div class="terminal-buttons">
+        <div class="terminal-button close"></div>
+        <div class="terminal-button minimize"></div>
+        <div class="terminal-button maximize"></div>
+      </div>
+      <div class="terminal-title">akileshas@ai: ~</div>
+    </div>
+
+    <div class="terminal-content">
+      <div class="line prompt">whoami</div>
+      <div class="line output highlight">akileshas</div>
+
+      <div class="line prompt">pwd</div>
+      <div class="line output info">/universe/observable_universe/laniakea_supercluster/virgo_supercluster/local_group/milky_way/orion_arm/solar_system/earth/asia/india/tamil_nadu/kanyakumari/</div>
+
+      <div class="line prompt">uname -a</div>
+      <div class="line output">linux akilesh-arch 6.5.5-arch1-1 #1 smp preempt fri may 30 12:34:56 utc 2025 x86_64 gnu/linux</div>
+
+      <div class="line prompt">fastfetch</div>
+      <div class="fastfetch">
+        <div class="ascii-art">    ___
+   (.. |
+   (<> |
+  / __  \
+ ( /  \ /|
+*/\ *_)/_)
+\/-____\/   </div>
+        <div class="fastfetch-info">
+          <div class="fastfetch-header">akileshas@ai</div>
+          <div class="fastfetch-line">
+            <div class="fastfetch-key">os:</div>
+            <div class="fastfetch-value">archlinux (rolling, like my mindset)</div>
+          </div>
+          <div class="fastfetch-line">
+            <div class="fastfetch-key">user:</div>
+            <div class="fastfetch-value">akileshas</div>
+          </div>
+          <div class="fastfetch-line">
+            <div class="fastfetch-key">host:</div>
+            <div class="fastfetch-value">ai</div>
+          </div>
+          <div class="fastfetch-line">
+            <div class="fastfetch-key">kernel:</div>
+            <div class="fastfetch-value">init=/bin/think</div>
+          </div>
+          <div class="fastfetch-line">
+            <div class="fastfetch-key">uptime:</div>
+            <div class="fastfetch-value">19 years</div>
+          </div>
+          <div class="fastfetch-line">
+            <div class="fastfetch-key">terminal:</div>
+            <div class="fastfetch-value">homepage v1.0 (/dev/identity)</div>
+          </div>
+          <div class="fastfetch-line">
+            <div class="fastfetch-key">shell:</div>
+            <div class="fastfetch-value">/bin/brain</div>
+          </div>
+          <div class="fastfetch-line">
+            <div class="fastfetch-key">editor:</div>
+            <div class="fastfetch-value">nvim</div>
+          </div>
+          <div class="fastfetch-line">
+            <div class="fastfetch-key">locale:</div>
+            <div class="fastfetch-value">c, cpp, go, haskell, zig, ...</div>
+          </div>
+          <div class="fastfetch-line">
+            <div class="fastfetch-key">packages:</div>
+            <div class="fastfetch-value">pytorch, tinygrad, ...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="line prompt">find ~/ -type l</div>
+      <div class="line output">github</div>
+      <div class="line output">mail</div>
+      <div class="line output">resume</div>
+
+      <div class="line prompt">compgen -g</div>
+      <div class="line output">ai, research, nlp, system programming, open source, distributed systems, ml, dl, reinforcement learning, computer vision, neural networks, edge computing, optimization, mathematics, physics, quantum computing, blockchain, cryptography, game theory, robotics, automation</div>
+
+      <div class="line prompt">timedatectl | grep "time zone"</div>
+      <div class="line output">time zone: utc +5:30</div>
+
+      <div class="line comment"># about me</div>
+      <div class="line output">i build systems that learn and think.</div>
+      <div class="line output">passionate about research, minimalism, and open systems.</div>
+      <div class="line output">love to play with systems and data.</div>
+      <div class="line output">driven by curiosity to understand the fundamental nature of intelligence.</div>
+      <div class="line output">believer in the power of mathematics and elegant code.</div>
+
+      <div class="line comment"># current projects</div>
+      <div class="line output">→ neural architecture search optimization</div>
+      <div class="line output">→ efficient model compression techniques</div>
+      <div class="line output">→ distributed training systems</div>
+      <div class="line output">→ tinygrad contributions</div>
+
+      <div class="line comment"># research interests</div>
+      <div class="line output">→ computer vision & nlp</div>
+      <div class="line output">→ reinforcement learning</div>
+      <div class="line output">→ edge ai & model optimization</div>
+      <div class="line output">→ interpretable ai</div>
+      <div class="line output">→ quantum machine learning</div>
+
+      <div class="line prompt">_<span class="cursor"></span></div>
+    </div>
+  </div>
+</body>
+</html>
