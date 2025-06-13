@@ -15,8 +15,9 @@
     html, body {
       height: 100%;
       overflow: hidden; /* Disable page scroll */
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      background: #0a0a0a;
       font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -27,20 +28,17 @@
       width: 90%;
       max-width: 900px;
       height: 85vh;
-      background: rgba(15, 15, 15, 0.95);
+      background: #000000;
       border-radius: 12px;
       border: 1px solid rgba(15, 125, 177, 0.3);
-      box-shadow:
-        0 0 50px rgba(15, 125, 177, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
+      box-shadow: 0 0 50px rgba(15, 125, 177, 0.1);
       overflow: hidden;
       position: relative;
     }
 
     /* Terminal header */
     .terminal-header {
-      background: linear-gradient(90deg, #1a1a1a, #2a2a2a);
+      background: #1a1a1a;
       border-bottom: 1px solid rgba(15, 125, 177, 0.2);
       padding: 12px 20px;
       display: flex;
@@ -78,6 +76,7 @@
       overflow-y: auto;
       padding: 20px;
       background: #000000;
+      border-radius: 0 0 11px 11px;
     }
 
     /* Custom scrollbar */
@@ -99,7 +98,7 @@
       background: rgba(15, 125, 177, 0.5);
     }
 
-    /* Terminal text styles */
+    /* Terminal text styles - all consistent font size */
     .line {
       margin: 0.3rem 0;
       white-space: pre-wrap;
@@ -110,45 +109,85 @@
     .prompt {
       color: #0f7db1;
       font-weight: 500;
+      font-size: 14px;
     }
 
     .prompt::before {
-      content: "➜ ";
+        content: ">>> [~] $_ ";
       color: #0f7db1;
       font-weight: bold;
+      font-size: 14px;
     }
 
     .output {
       color: #f0f0f0;
       margin-left: 1rem;
+      font-size: 14px;
     }
 
     .comment {
       color: #888;
       font-style: italic;
+      font-size: 14px;
     }
 
     .highlight {
       color: #0f7db1;
       font-weight: bold;
+      font-size: 14px;
     }
 
     .accent {
       color: #ff6b6b;
       font-weight: 500;
+      font-size: 14px;
     }
 
     .info {
       color: #ffd93d;
+      font-size: 14px;
+    }
+
+    /* Command syntax highlighting */
+    .cmd-whoami,
+    .cmd-pwd,
+    .cmd-fastfetch,
+    .cmd-find,
+    .cmd-compgen,
+    .cmd-timedatectl,
+    .cmd-cat,
+    .cmd-type {
+      color: #50fa7b;
+      font-size: 14px;
+    }
+
+    /* Path highlighting */
+    .path {
+      color: #8be9fd;
+      font-size: 14px;
+    }
+
+    /* Updated link styles */
+    .file-link, .path-link {
+      color: #f0f0f0;
+      text-decoration: none;
+      cursor: pointer;
+      transition: text-decoration 0.3s ease;
+      font-size: 14px;
+    }
+
+    .file-link:hover, .path-link:hover {
+      text-decoration: underline;
+      text-decoration-color: #50fa7b;
     }
 
     /* Fastfetch style display */
     .fastfetch {
       margin: 1rem 0;
       padding: 1rem;
-      background: rgba(15, 125, 177, 0.05);
-      border-left: 3px solid #0f7db1;
-      border-radius: 0 8px 8px 0;
+      background: #000000;
+      border: 1px solid rgba(15, 125, 177, 0.1);
+      border-radius: 8px;
       display: flex;
       gap: 2rem;
     }
@@ -156,10 +195,10 @@
     .ascii-art {
       color: #0f7db1;
       font-family: monospace;
-      font-size: 12px;
+      font-size: 14px;
       line-height: 1.2;
       white-space: pre;
-      min-width: 120px;
+      min-width: 150px;
     }
 
     .fastfetch-info {
@@ -169,23 +208,26 @@
     .fastfetch-header {
       color: #0f7db1;
       font-weight: bold;
-      font-size: 16px;
+      font-size: 14px;
       margin-bottom: 0.5rem;
     }
 
     .fastfetch-line {
       display: flex;
       margin: 0.2rem 0;
+      font-size: 14px;
     }
 
     .fastfetch-key {
       color: #0f7db1;
       font-weight: 500;
       min-width: 120px;
+      font-size: 14px;
     }
 
     .fastfetch-value {
       color: #f0f0f0;
+      font-size: 14px;
     }
 
     /* Cursor animation */
@@ -204,20 +246,72 @@
       51%, 100% { opacity: 0; }
     }
 
-    /* Links */
-    a {
+    /* General links (for other content) */
+    a:not(.file-link):not(.path-link) {
       color: #0f7db1;
       text-decoration: none;
       transition: color 0.3s ease;
+      font-size: 14px;
     }
 
-    a:hover {
+    a:not(.file-link):not(.path-link):hover {
       color: #ffffff;
       text-decoration: underline;
     }
 
+    /* Screen size warning */
+    .screen-warning {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000000;
+      color: #ff6b6b;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 14px;
+      padding: 20px;
+      z-index: 9999;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .warning-content {
+      max-width: 90%;
+      line-height: 1.6;
+    }
+
+    .warning-title {
+      color: #ff6b6b;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .warning-text {
+      color: #f0f0f0;
+      margin: 0.5rem 0;
+    }
+
+    .warning-command {
+      color: #50fa7b;
+      font-weight: bold;
+    }
+
     /* Responsive design */
-    @media (max-width: 768px) {
+    @media (max-width: 700px) {
+      .terminal-container {
+        display: none;
+      }
+
+      .screen-warning {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 701px) and (max-width: 768px) {
       .terminal-container {
         width: 95%;
         height: 90vh;
@@ -227,17 +321,59 @@
         padding: 15px;
       }
 
-      .line {
+      .line,
+      .prompt,
+      .output,
+      .comment,
+      .highlight,
+      .accent,
+      .info,
+      .cmd-whoami,
+      .cmd-pwd,
+      .cmd-fastfetch,
+      .cmd-find,
+      .cmd-compgen,
+      .cmd-timedatectl,
+      .cmd-cat,
+      .cmd-type,
+      .path,
+      .file-link,
+      .path-link,
+      .ascii-art,
+      .fastfetch-header,
+      .fastfetch-line,
+      .fastfetch-key,
+      .fastfetch-value,
+      a:not(.file-link):not(.path-link) {
         font-size: 13px;
       }
 
       .fastfetch-key {
         min-width: 100px;
       }
+
+      .ascii-art {
+        min-width: 120px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="screen-warning">
+    <div class="warning-content">
+      <div class="warning-title">>>> SCREEN SIZE ERROR</div>
+      <div class="warning-text">brain: /dev/display: Device too small</div>
+      <div class="warning-text">terminal: minimum viewport width required</div>
+      <div class="warning-text"></div>
+      <div class="warning-text">RECOMMENDED:</div>
+      <div class="warning-text"><span class="warning-command">xrandr --output DISPLAY --mode 1024x768</span></div>
+      <div class="warning-text">or rotate device to landscape mode</div>
+      <div class="warning-text"></div>
+      <div class="warning-text">current viewport: <span id="viewport-size">calculating...</span></div>
+      <div class="warning-text">required: ≥ 700px width</div>
+    </div>
+  </div>
+
   <div class="terminal-container">
     <div class="terminal-header">
       <div class="terminal-buttons">
@@ -249,24 +385,24 @@
     </div>
 
     <div class="terminal-content">
-      <div class="line prompt">whoami</div>
-      <div class="line output highlight">akileshas</div>
+      <div class="line prompt"><span class="cmd-whoami">whoami</span></div>
+      <div class="line output">akileshas</div>
 
-      <div class="line prompt">pwd</div>
-      <div class="line output info">/universe/observable_universe/laniakea_supercluster/virgo_supercluster/local_group/milky_way/orion_arm/solar_system/earth/asia/india/tamil_nadu/kanyakumari/</div>
+      <div class="line prompt"><span class="cmd-pwd">pwd</span></div>
+      <div class="line output path"><a href="https://www.google.com/maps/place/Kanyakumari,+Tamil+Nadu,+India" target="_blank" class="path-link">/universe/observable_universe/laniakea_supercluster/virgo_supercluster/local_group/milky_way/orion_arm/solar_system/earth/asia/india/tamil_nadu/kanyakumari/</a></div>
 
-      <div class="line prompt">uname -a</div>
-      <div class="line output">linux akilesh-arch 6.5.5-arch1-1 #1 smp preempt fri may 30 12:34:56 utc 2025 x86_64 gnu/linux</div>
+      <div class="line prompt"><span class="cmd-timedatectl">timedatectl | grep "time zone"</span></div>
+      <div class="line output">time zone: utc +5:30</div>
 
-      <div class="line prompt">fastfetch</div>
+      <div class="line prompt"><span class="cmd-fastfetch">fastfetch</span></div>
       <div class="fastfetch">
-        <div class="ascii-art">    ___
-   (.. |
-   (<> |
-  / __  \
- ( /  \ /|
-*/\ *_)/_)
-\/-____\/   </div>
+        <div class="ascii-art">        ___
+       (.. |
+       (<> |
+      / __  \
+     ( /  \ /|
+    _/\  _)/_)
+    \/-_____\/</div>
         <div class="fastfetch-info">
           <div class="fastfetch-header">akileshas@ai</div>
           <div class="fastfetch-line">
@@ -312,39 +448,37 @@
         </div>
       </div>
 
-      <div class="line prompt">find ~/ -type l</div>
-      <div class="line output">github</div>
-      <div class="line output">mail</div>
-      <div class="line output">resume</div>
+      <div class="line prompt"><span class="cmd-find">find ~/ -type l</span></div>
+      <div class="line output"><a href="https://github.com/akileshas" class="file-link">github</a></div>
+      <div class="line output"><a href="mailto:akileshas.dev@gmail.com" class="file-link">mail</a></div>
+      <div class="line output"><a href="#" class="file-link">resume</a></div>
 
-      <div class="line prompt">compgen -g</div>
-      <div class="line output">ai, research, nlp, system programming, open source, distributed systems, ml, dl, reinforcement learning, computer vision, neural networks, edge computing, optimization, mathematics, physics, quantum computing, blockchain, cryptography, game theory, robotics, automation</div>
+      <div class="line prompt"><span class="cmd-compgen">compgen -g</span></div>
+      <div class="line output">ai, research, nlp, system programming, open source, distributed systems, ml, dl, reinforcement learning, computer vision, neural networks, edge computing, optimization, mathematics, ...</div>
 
-      <div class="line prompt">timedatectl | grep "time zone"</div>
-      <div class="line output">time zone: utc +5:30</div>
+      <div class="line prompt"><span class="cmd-cat">cat ./about.txt</span></div>
+      <div class="line output">* i build systems that learn and think.</div>
+      <div class="line output">* passionate about research, minimalism, and open systems.</div>
+      <div class="line output">* love to play with systems and data.</div>
+      <div class="line output">* driven by curiosity to understand the fundamental nature of intelligence.</div>
+      <div class="line output">* believer in the power of mathematics and elegant code.</div>
 
-      <div class="line comment"># about me</div>
-      <div class="line output">i build systems that learn and think.</div>
-      <div class="line output">passionate about research, minimalism, and open systems.</div>
-      <div class="line output">love to play with systems and data.</div>
-      <div class="line output">driven by curiosity to understand the fundamental nature of intelligence.</div>
-      <div class="line output">believer in the power of mathematics and elegant code.</div>
-
-      <div class="line comment"># current projects</div>
-      <div class="line output">→ neural architecture search optimization</div>
-      <div class="line output">→ efficient model compression techniques</div>
-      <div class="line output">→ distributed training systems</div>
-      <div class="line output">→ tinygrad contributions</div>
-
-      <div class="line comment"># research interests</div>
-      <div class="line output">→ computer vision & nlp</div>
-      <div class="line output">→ reinforcement learning</div>
-      <div class="line output">→ edge ai & model optimization</div>
-      <div class="line output">→ interpretable ai</div>
-      <div class="line output">→ quantum machine learning</div>
-
-      <div class="line prompt">_<span class="cursor"></span></div>
+      <div class="line prompt"><span class="cursor"></span></div>
     </div>
   </div>
+
+  <script>
+    // Update viewport size display
+    function updateViewportSize() {
+      const viewportElement = document.getElementById('viewport-size');
+      if (viewportElement) {
+        viewportElement.textContent = `${window.innerWidth}x${window.innerHeight}`;
+      }
+    }
+
+    // Update on load and resize
+    window.addEventListener('load', updateViewportSize);
+    window.addEventListener('resize', updateViewportSize);
+  </script>
 </body>
 </html>
